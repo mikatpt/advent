@@ -6,9 +6,9 @@ extern crate test;
 mod days;
 use std::{env, fs};
 
-use days::d6::{part1, part2};
+use days::d7::{part1, part2};
 
-fn main() -> color_eyre::Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<()> {
     color_eyre::install()?;
 
     let filename = env::args().nth(1).expect("Couldn't read file!");
@@ -24,4 +24,4 @@ fn main() -> color_eyre::Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-pub type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
+pub type Result<T> = color_eyre::Result<T, Box<dyn std::error::Error>>;
