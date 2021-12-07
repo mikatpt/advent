@@ -8,7 +8,6 @@ Return the score of the winning board:
     - sum(unmarked numbers) * final called number
 */
 
-
 /*
 [
 [5x5 grid],
@@ -37,7 +36,11 @@ struct Board {
 
 pub fn part1(input: &str) -> Result<u16> {
     let mut lines = input.lines();
-    let rand_ints = lines.next().ok_or("Empty!")?.split(',').map(|c| c.parse::<u16>().unwrap());
+    let rand_ints = lines
+        .next()
+        .ok_or("Empty!")?
+        .split(',')
+        .map(|c| c.parse::<u16>().unwrap());
     lines.next();
 
     let game = populate_boards(&mut lines);
@@ -47,7 +50,11 @@ pub fn part1(input: &str) -> Result<u16> {
 
 pub fn part2(input: &str) -> Result<u16> {
     let mut lines = input.lines();
-    let rand_ints = lines.next().ok_or("Empty!")?.split(',').map(|c| c.parse::<u16>().unwrap());
+    let rand_ints = lines
+        .next()
+        .ok_or("Empty!")?
+        .split(',')
+        .map(|c| c.parse::<u16>().unwrap());
     lines.next();
 
     let game = populate_boards(&mut lines);
@@ -59,7 +66,7 @@ fn populate_boards(lines: &mut core::str::Lines) -> Vec<Board> {
     let mut game: Vec<Board> = Vec::new();
 
     while let Some(mut line) = lines.next() {
-        let mut board = Board{
+        let mut board = Board {
             map: HashMap::new(),
             rows: [0; 5],
             cols: [0; 5],
@@ -67,7 +74,10 @@ fn populate_boards(lines: &mut core::str::Lines) -> Vec<Board> {
         };
 
         for i in 0..5 {
-            let row = line.split_whitespace().enumerate().map(|(j, c)| (c.parse::<u16>().unwrap(), (i, j, false)));
+            let row = line
+                .split_whitespace()
+                .enumerate()
+                .map(|(j, c)| (c.parse::<u16>().unwrap(), (i, j, false)));
 
             for (j, (k, v)) in row.enumerate() {
                 board.map.insert(k, v);
@@ -91,7 +101,10 @@ fn calc_sum(i: u16, map: &mut HashMap<u16, (usize, usize, bool)>) -> Result<u16>
     Ok(sum * i)
 }
 
-fn solve<I>(mut game: Vec<Board>, rand_ints: I, pt_1: bool) -> Result<u16> where I: Iterator<Item = u16> {
+fn solve<I>(mut game: Vec<Board>, rand_ints: I, pt_1: bool) -> Result<u16>
+where
+    I: Iterator<Item = u16>,
+{
     let mut winner: (u16, HashMap<u16, (usize, usize, bool)>) = (0, HashMap::new());
 
     for i in rand_ints {
@@ -145,15 +158,15 @@ mod test {
 
     #[test]
     fn test1() {
-        let output = part1(INPUT);
+        let output = part1(INPUT).unwrap();
 
-        assert_eq!(4512, output.unwrap());
+        assert_eq!(4512, output);
     }
 
     #[test]
     fn test2() {
-        let output = part2(INPUT);
+        let output = part2(INPUT).unwrap();
 
-        assert_eq!(1924, output.unwrap());
+        assert_eq!(1924, output);
     }
 }

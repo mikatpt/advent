@@ -1,18 +1,17 @@
 #![allow(dead_code, unused_variables)]
-mod template;
-mod d1;
-mod d2;
-mod d3;
-mod d4;
-mod d5;
+#![feature(test)]
 
+extern crate test;
+
+mod days;
 use std::{env, fs};
 
-use d5::{part1, part2};
+use days::d6::{part1, part2};
 
 fn main() -> color_eyre::Result<(), Box<dyn std::error::Error>> {
     color_eyre::install()?;
-    let filename = env::args().nth(1).ok_or("Couldn't read file!")?;
+
+    let filename = env::args().nth(1).expect("Couldn't read file!");
 
     let input = fs::read_to_string(filename)?;
     let input = input.trim();

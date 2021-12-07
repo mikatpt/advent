@@ -96,16 +96,16 @@ mod test {
     #[test]
     fn example() {
         let input = " 199 200 208 210 200 207 240 269 260 263 ";
-        let output = part1(input);
+        let output = part1(input).unwrap();
 
-        assert_eq!(7, output.unwrap());
+        assert_eq!(7, output);
     }
 
     #[test]
     fn example2() {
         let input = " 199 200 208 210 200 207 240 269 260 263 ";
-        let output = part2(input);
+        let output = part2(input).unwrap();
 
-        assert_eq!(5, output.unwrap());
+        assert_eq!(5, output);
     }
 }

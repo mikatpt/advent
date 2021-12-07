@@ -71,13 +71,13 @@ mod test {
 
     #[test]
     fn test() {
-        let output = part1(INPUT);
-        assert_eq!(150, output.unwrap());
+        let output = part1(INPUT).unwrap();
+        assert_eq!(150, output);
     }
 
     #[test]
     fn test2() {
-        let output = part2(INPUT);
-        assert_eq!(900, output.unwrap());
+        let output = part2(INPUT).unwrap();
+        assert_eq!(900, output);
     }
 }
