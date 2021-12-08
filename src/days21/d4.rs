@@ -1,32 +1,5 @@
-/*
-Day 4: Bingo.
-
-Each board has a 5x5 grid of numbers.
-Numbers are randomly chosen and marked on boards containing those numbers.
-Full rows and columns count for bingo, not diagonals.
-Return the score of the winning board:
-    - sum(unmarked numbers) * final called number
-*/
-
-/*
-[
-[5x5 grid],
-[5x5 grid],
-[5x5 grid]
-]
-
-struct Solution {
-    hashmap where key = num, val = (x, y, bool)
-    xvec: [0,0,0,0,0]
-    yvec: [0,0,0,0,0]
-}
-when one index of xvec or yvec hits 5, we've found a winner.
-
-*/
-
 use crate::{eyre, Result};
 use std::collections::HashMap;
-use tracing::instrument;
 
 struct Board {
     map: HashMap<u16, (usize, usize, bool)>,
@@ -35,7 +8,6 @@ struct Board {
     won: bool,
 }
 
-#[instrument(skip_all)]
 pub fn part1(input: &str) -> Result<u16> {
     let mut lines = input.lines();
     let rand_ints = lines
@@ -50,7 +22,6 @@ pub fn part1(input: &str) -> Result<u16> {
     solve(game, rand_ints, true)
 }
 
-#[instrument(skip_all)]
 pub fn part2(input: &str) -> Result<u16> {
     let mut lines = input.lines();
     let rand_ints = lines
@@ -65,7 +36,6 @@ pub fn part2(input: &str) -> Result<u16> {
     solve(game, rand_ints, false)
 }
 
-#[instrument(skip_all)]
 fn populate_boards(lines: &mut core::str::Lines) -> Vec<Board> {
     let mut game: Vec<Board> = Vec::new();
 
@@ -95,7 +65,6 @@ fn populate_boards(lines: &mut core::str::Lines) -> Vec<Board> {
     game
 }
 
-#[instrument(skip(map))]
 fn calc_sum(i: u16, map: &mut HashMap<u16, (usize, usize, bool)>) -> Result<u16> {
     let sum: u16 = map.iter().fold(0, |mut prev, (&key, &(x, y, marked))| {
         if !marked {
@@ -106,7 +75,6 @@ fn calc_sum(i: u16, map: &mut HashMap<u16, (usize, usize, bool)>) -> Result<u16>
     Ok(sum * i)
 }
 
-#[instrument(skip_all)]
 fn solve<I>(mut game: Vec<Board>, rand_ints: I, pt_1: bool) -> Result<u16>
 where
     I: Iterator<Item = u16>,
@@ -161,19 +129,15 @@ const INPUT: &str = "7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::tracing::init;
+    use eyre_test::test;
 
     #[test]
     fn test1() {
-        init();
-
         assert_eq!(4512, part1(INPUT).unwrap());
     }
 
     #[test]
     fn test2() {
-        init();
-
         assert_eq!(1924, part2(INPUT).unwrap());
     }
 }

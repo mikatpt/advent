@@ -1,42 +1,5 @@
-/*
-Day 6: Lanternfish
-
-Each fish makes a new fish every 7 days. This isn't synced, however.
-
-Fish timer = 3:
-    - after the 4th iteration (2, 1, 0, HERE), it creates a new fish with timer = 8.
-    - It will reset to a timer of 6
-Find total fish after 80 days.
-
-0: map{
-    0: 1,
-    1: 2,
-    2: 3,
-    3: 4,
-    4: 5,
-    5: 6,
-    6: 7,
-    7: 8,
-    8: 9,
-}
-
-1. let item = map[0] (1)
-2.   map[0] = map[1]
-3.   map[1] = map[2]
-4.   map[2] = map[3]
-5.   map[3] = map[4]
-6.   map[4] = map[5]
-7.   map[5] = map[6]
-8.   map[6] = map[7] + item
-9.   map[7] = map[8]
-10.  map[8] = item
-
-*/
-
 use crate::Result;
-use tracing::instrument;
 
-#[instrument(skip_all)]
 pub fn part1(input: &str) -> Result<u64> {
     let mut fish: Vec<u8> = input
         .split(',')
@@ -59,7 +22,6 @@ pub fn part1(input: &str) -> Result<u64> {
 
 use std::collections::HashMap;
 
-#[instrument(skip_all)]
 pub fn part2(input: &str) -> Result<u128> {
     let mut fish: HashMap<u8, u128> = input.split(',').fold(HashMap::new(), |mut map, char| {
         let n = char.parse().expect("Not a u8!");
@@ -82,7 +44,6 @@ pub fn part2(input: &str) -> Result<u128> {
     Ok(res)
 }
 
-#[instrument(skip_all)]
 pub fn solve(input: &str) -> Result<u64> {
     let mut fish: [u64; 9] = [0; 9];
     input
@@ -105,27 +66,21 @@ const INPUT: &str = "3,4,3,1,2";
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::tracing::init;
+    use eyre_test::test;
     use test::Bencher;
 
     #[test]
     fn test1() {
-        init();
-
         assert_eq!(5934, part1(INPUT).unwrap());
     }
 
     #[test]
     fn test2() {
-        init();
-
         assert_eq!(26984457539, part2(INPUT).unwrap());
     }
 
     #[bench]
     fn bench2(b: &mut Bencher) {
-        init();
-
         b.iter(|| part2(INPUT));
     }
 }

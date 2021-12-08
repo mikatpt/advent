@@ -1,76 +1,5 @@
-/*
-Day 5: Hydrothermal Venture
-
-Vents form in lines in the format x1,y1 -> x2,y2
-Lines are inclusive of their points.
-    - 1,1->1,3 covers (1,1),(1,2),(1,3)
-
-Find # of points where at least two lines overlap (the most dangerous points)
-Consider only horizontal and vertical lines (ignore where x1!=x2 || y1!=y2)
-
-0,9 -> 5,9
-8,0 -> 0,8
-9,4 -> 3,4
-2,2 -> 2,1
-7,0 -> 7,4
-6,4 -> 2,0
-0,9 -> 2,9
-3,4 -> 1,4
-0,0 -> 8,8
-5,5 -> 8,2
-
-0,9 -> 5,9
-0,9 -> 2,9 // 3 spots
-
-9,4 -> 3,4
-7,0 -> 7,4
-3,4 -> 1,4
-2,2 -> 2,1
-
-1. Get all line segments and sort by x ascending.
-2. Iterate through. If
-
-1. Get all line segments where x OR y match.
-2. If segments overlap, final_count += abs((a2-a1) - (b2-b1))
-
-if a1 <= b2 && a2 >= b1 { // overlaps}
-if b1 <= a2 && b2 >= a1 { // overlaps}
-
-Easiest way is to just use a grid, but our inputs are in the 100's...
-Let's do it the naive way.
-
-for line in lines:
-    if x1==x2:
-        // find smallest y
-        for i in y1..=y2:
-
-            grid[x1][i] = true
-    else if y1==y2:
-        // find smallest x
-        for i in x2..=y2:
-            grid[i][y1] = true
-
-
-map = {(0,9) = 1}
-if map[(0,9)]
-    if item == 2 skip
-    item += 1
-    if item == 2 count += 1
-
-for line in lines:
-    if x matches:
-        for j in range y...:
-            item = map.entry((x,j)).or(0)
-            if item == 2 skip
-            item += 1
-            if item == 2 count += 1
-
-
-*/
-
 use crate::Result;
 use std::collections::HashMap;
-use tracing::instrument;
 
 #[derive(Debug)]
 struct Line {
@@ -84,7 +13,6 @@ struct Coordinate {
     y: i32,
 }
 
-#[instrument(skip_all)]
 fn read_input(input: &str) -> impl Iterator<Item = Line> + '_ {
     input.lines().filter_map(|line| {
         let mut nums = line
@@ -102,7 +30,6 @@ fn read_input(input: &str) -> impl Iterator<Item = Line> + '_ {
     })
 }
 
-#[instrument(skip(grid))]
 fn mutate(grid: &mut HashMap<(i32, i32), u8>, count: &mut i32, entry: (i32, i32)) {
     let coordinate = grid.entry(entry).or_insert(0);
     *coordinate += 1;
@@ -111,7 +38,6 @@ fn mutate(grid: &mut HashMap<(i32, i32), u8>, count: &mut i32, entry: (i32, i32)
     }
 }
 
-#[instrument(skip_all)]
 fn solve(line: &Line, grid: &mut HashMap<(i32, i32), u8>, count: &mut i32, x: bool) {
     let (mut start, mut end) = match x {
         true => (line.start.y, line.end.y),
@@ -131,7 +57,6 @@ fn solve(line: &Line, grid: &mut HashMap<(i32, i32), u8>, count: &mut i32, x: bo
     }
 }
 
-#[instrument(skip_all)]
 fn solve_diag(line: &Line, grid: &mut HashMap<(i32, i32), u8>, count: &mut i32) {
     let (mut start_x, mut start_y) = (line.start.x, line.start.y);
     let (end_x, end_y) = (line.end.x, line.end.y);
@@ -150,7 +75,6 @@ fn solve_diag(line: &Line, grid: &mut HashMap<(i32, i32), u8>, count: &mut i32) 
     }
 }
 
-#[instrument(skip_all)]
 pub fn part1(input: &str) -> Result<i32> {
     let mut count: i32 = 0;
     let mut grid: HashMap<(i32, i32), u8> = HashMap::new();
@@ -168,7 +92,6 @@ pub fn part1(input: &str) -> Result<i32> {
     Ok(count)
 }
 
-#[instrument(skip_all)]
 pub fn part2(input: &str) -> Result<i32> {
     let mut count: i32 = 0;
     let mut grid: HashMap<(i32, i32), u8> = HashMap::new();
@@ -202,19 +125,15 @@ const INPUT: &str = "0,9 -> 5,9
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::tracing::init;
+    use eyre_test::test;
 
     #[test]
     fn test1() {
-        init();
-
         assert_eq!(5, part1(INPUT).unwrap());
     }
 
     #[test]
     fn test2() {
-        init();
-
         assert_eq!(12, part2(INPUT).unwrap());
     }
 }

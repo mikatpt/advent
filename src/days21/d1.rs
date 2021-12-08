@@ -1,46 +1,5 @@
-/*
-sonar sweep
-read line by line
-
-How quickly does depth increase?
-    - Count # of times depth measurement increases from prev measurement
-
-199 (N/A - no previous measurement)
-200 (increased)
-208 (increased)
-210 (increased)
-200 (decreased)
-207 (increased)
-240 (increased)
-269 (increased)
-260 (decreased)
-263 (increased)
-
-output = 7
-
-follow-up sliding window.
-
-199  A
-200  A B
-208  A B C          607
-210    B C D        618
-200  E   C D        618
-207  E F   D
-240  E F G
-269    F G H
-260      G H
-263        H
-
-
-first  = 199 + 200 + 208 (0, 1, 2)
-second = 200 + 208 + 210 (1, 2, 3) = first - d[0] + d[3]
-third  = second - d[1] + d[4];
-
-*/
 use crate::Result;
-use tracing::instrument;
 
-#[instrument(skip_all)]
 pub fn part1(input: &str) -> Result<i32> {
     let mut res = 0;
 
@@ -64,7 +23,6 @@ pub fn part1(input: &str) -> Result<i32> {
     Ok(res)
 }
 
-#[instrument(skip_all)]
 pub fn part2(input: &str) -> Result<i32> {
     let mut res = 0;
 
@@ -96,19 +54,15 @@ const INPUT: &str = " 199 200 208 210 200 207 240 269 260 263 ";
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::tracing::init;
+    use eyre_test::test;
 
     #[test]
     fn test1() {
-        init();
-
         assert_eq!(7, part1(INPUT).unwrap());
     }
 
     #[test]
     fn test2() {
-        init();
-
         assert_eq!(5, part2(INPUT).unwrap());
     }
 }

@@ -1,47 +1,5 @@
-/*
-Day 3: diagnostics report.
-
-Find gamma rate and epsilon rate for each binary number.
-Power consumption = gamma * epsilon
-
-
-Just ran through the below example, seems like this is how you do bit addition.
-To add a one, you run  (x << 1) | 1
-To add a zero, you run (x << 1)
-
-0     << 1 = 10    | 1 = 11     (3)
-11    << 1 = 110                (6)
-11    << 1 = 1100  | 1 = 1101   (11)
-1101  << 1 = 11010 | 1 = 11011  (16)
-11011 << 1 = 110100             (22)
-
-AND:            a * b
-    0 & 1 = 0
-    0 & 0 = 0
-    1 & 1 = 1
-OR:
-    0 | 1 = 1
-    0 | 0 = 0
-    1 | 1 = 1
-XOR:
-    a^b == b^a
-    a^a == 0
-
-    0 ^ 1 = 1
-    0 ^ 0 = 0
-    1 ^ 1 = 0
-NOT:
-    !0 = 1, !1 = 0
-LSHIFT:
-    001 << 1 = 010
-RSHIFT:
-    100 >> 1 = 010
-*/
-
 use crate::{eyre, Result};
-use tracing::instrument;
 
-#[instrument(skip_all)]
 pub fn part1(s: &str) -> Result<u32> {
     // length of binary number
     let cols = s.lines().next().ok_or_else(|| eyre!("Empty input"))?.len();
@@ -66,24 +24,6 @@ pub fn part1(s: &str) -> Result<u32> {
     Ok(gamma * epsilon)
 }
 
-/*
-Find oxygen generator rating and C02 scrubber rating.
-
-1. Iterate through list of binary numbers. Consider only the first bit.
-    - Keep number if it passes bit criteria. Otherwise, discard.
-    - If you have only one number left, this is the value you are searching for.
-    - Otherwise, repeat for the next bit.
-
-CRITERIA (oxygen):
-    - Find most common value (0 or 1) for current bit. Keep only # with that bit.
-        - If count_0 == count_1, keep 0 values.
-
-CRITERIA (c02):
-    - Find least common value, if equal keep 0's.
-
-*/
-
-#[instrument(skip_all)]
 pub fn part2(s: &str) -> Result<u32> {
     let rating = |common: bool| -> Result<u32> {
         let mut lines: Vec<_> = s.lines().collect();
@@ -131,19 +71,15 @@ const INPUT: &str = "00100
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::tracing::init;
+    use eyre_test::test;
 
     #[test]
     fn test() {
-        init();
-
         assert_eq!(198, part1(INPUT).unwrap());
     }
 
     #[test]
     fn test2() {
-        init();
-
         assert_eq!(230, part2(INPUT).unwrap());
     }
 }
