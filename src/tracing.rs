@@ -20,6 +20,9 @@ fn install_tracing() {
 pub fn init() {
     INIT.call_once(|| {
         install_tracing();
-        color_eyre::install().unwrap();
+        color_eyre::config::HookBuilder::default()
+            .display_env_section(false)
+            .install()
+            .unwrap();
     })
 }

@@ -7,8 +7,10 @@ use advent::Result;
 fn main() -> Result<()> {
     advent::tracing::init();
 
-    println!("Answer to part 1 is {}", part1(&read_file()?)?);
-    println!("Answer to part 2 is {}", part2(&read_file()?)?);
+    let input = read_file()?;
+
+    println!("Answer to part 1 is {}", part1(&input)?);
+    println!("Answer to part 2 is {}", part2(&input)?);
 
     Ok(())
 }
