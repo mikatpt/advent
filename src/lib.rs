@@ -3,7 +3,8 @@
 
 extern crate test;
 
-pub mod days;
+pub mod days21;
+mod template;
 pub mod tracing;
 
 pub use color_eyre::eyre::eyre;

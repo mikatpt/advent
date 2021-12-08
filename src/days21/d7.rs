@@ -75,7 +75,7 @@ mod tests {
         assert_eq!(168, part2(INPUT).unwrap());
     }
 
-    static FILE: &str = include_str!("../../input/7.txt");
+    static FILE: &str = include_str!("../../input/21/7.txt");
     #[bench]
     fn bench1(b: &mut Bencher) {
         init();
