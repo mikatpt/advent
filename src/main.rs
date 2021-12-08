@@ -1,27 +1,23 @@
-#![allow(dead_code, unused_variables)]
-#![feature(test)]
-
-extern crate test;
-
-mod days;
 use std::{env, fs};
+use tracing::{info, instrument};
 
-use days::d7::{part1, part2};
+use advent::days::d7::{part1, part2};
+use advent::Result;
 
 fn main() -> Result<()> {
-    color_eyre::install()?;
+    advent::tracing::init();
 
-    let filename = env::args().nth(1).expect("Couldn't read file!");
+    println!("Answer to part 1 is {}", part1(&read_file()?)?);
+    println!("Answer to part 2 is {}", part2(&read_file()?)?);
 
-    let input = fs::read_to_string(filename)?;
-    let input = input.trim();
-
-    let output = part1(input)?;
-    let output2 = part2(input)?;
-
-    println!("Answer to part 1 is {}", output);
-    println!("Answer to part 2 is {}", output2);
     Ok(())
 }
 
-pub type Result<T> = color_eyre::Result<T, Box<dyn std::error::Error>>;
+#[instrument]
+fn read_file() -> Result<String> {
+    info!("Reading file from args");
+    let filename = env::args().nth(1).expect("Couldn't read file!");
+
+    let input = fs::read_to_string(filename)?;
+    Ok(input.trim().to_string())
+}

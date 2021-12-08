@@ -38,7 +38,9 @@ third  = second - d[1] + d[4];
 
 */
 use crate::Result;
+use tracing::instrument;
 
+#[instrument(skip_all)]
 pub fn part1(input: &str) -> Result<i32> {
     let mut res = 0;
 
@@ -62,6 +64,7 @@ pub fn part1(input: &str) -> Result<i32> {
     Ok(res)
 }
 
+#[instrument(skip_all)]
 pub fn part2(input: &str) -> Result<i32> {
     let mut res = 0;
 
@@ -77,7 +80,6 @@ pub fn part2(input: &str) -> Result<i32> {
     }
 
     for (i, line) in lines.iter().enumerate().skip(3) {
-        println!("{:?}", first);
         let second = first - lines[i - 3] + line;
 
         if second > first {
@@ -89,23 +91,24 @@ pub fn part2(input: &str) -> Result<i32> {
     Ok(res)
 }
 
+const INPUT: &str = " 199 200 208 210 200 207 240 269 260 263 ";
+
 #[cfg(test)]
-mod test {
+mod tests {
     use super::*;
+    use crate::tracing::init;
 
     #[test]
-    fn example() {
-        let input = " 199 200 208 210 200 207 240 269 260 263 ";
-        let output = part1(input).unwrap();
+    fn test1() {
+        init();
 
-        assert_eq!(7, output);
+        assert_eq!(7, part1(INPUT).unwrap());
     }
 
     #[test]
-    fn example2() {
-        let input = " 199 200 208 210 200 207 240 269 260 263 ";
-        let output = part2(input).unwrap();
+    fn test2() {
+        init();
 
-        assert_eq!(5, output);
+        assert_eq!(5, part2(INPUT).unwrap());
     }
 }

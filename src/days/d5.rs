@@ -70,6 +70,7 @@ for line in lines:
 
 use crate::Result;
 use std::collections::HashMap;
+use tracing::instrument;
 
 #[derive(Debug)]
 struct Line {
@@ -83,6 +84,7 @@ struct Coordinate {
     y: i32,
 }
 
+#[instrument(skip_all)]
 fn read_input(input: &str) -> impl Iterator<Item = Line> + '_ {
     input.lines().filter_map(|line| {
         let mut nums = line
@@ -100,6 +102,7 @@ fn read_input(input: &str) -> impl Iterator<Item = Line> + '_ {
     })
 }
 
+#[instrument(skip(grid))]
 fn mutate(grid: &mut HashMap<(i32, i32), u8>, count: &mut i32, entry: (i32, i32)) {
     let coordinate = grid.entry(entry).or_insert(0);
     *coordinate += 1;
@@ -108,6 +111,7 @@ fn mutate(grid: &mut HashMap<(i32, i32), u8>, count: &mut i32, entry: (i32, i32)
     }
 }
 
+#[instrument(skip_all)]
 fn solve(line: &Line, grid: &mut HashMap<(i32, i32), u8>, count: &mut i32, x: bool) {
     let (mut start, mut end) = match x {
         true => (line.start.y, line.end.y),
@@ -127,6 +131,7 @@ fn solve(line: &Line, grid: &mut HashMap<(i32, i32), u8>, count: &mut i32, x: bo
     }
 }
 
+#[instrument(skip_all)]
 fn solve_diag(line: &Line, grid: &mut HashMap<(i32, i32), u8>, count: &mut i32) {
     let (mut start_x, mut start_y) = (line.start.x, line.start.y);
     let (end_x, end_y) = (line.end.x, line.end.y);
@@ -145,6 +150,7 @@ fn solve_diag(line: &Line, grid: &mut HashMap<(i32, i32), u8>, count: &mut i32) 
     }
 }
 
+#[instrument(skip_all)]
 pub fn part1(input: &str) -> Result<i32> {
     let mut count: i32 = 0;
     let mut grid: HashMap<(i32, i32), u8> = HashMap::new();
@@ -162,6 +168,7 @@ pub fn part1(input: &str) -> Result<i32> {
     Ok(count)
 }
 
+#[instrument(skip_all)]
 pub fn part2(input: &str) -> Result<i32> {
     let mut count: i32 = 0;
     let mut grid: HashMap<(i32, i32), u8> = HashMap::new();
@@ -193,20 +200,21 @@ const INPUT: &str = "0,9 -> 5,9
 5,5 -> 8,2";
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::*;
+    use crate::tracing::init;
 
     #[test]
     fn test1() {
-        let output = part1(INPUT).unwrap();
+        init();
 
-        assert_eq!(5, output);
+        assert_eq!(5, part1(INPUT).unwrap());
     }
 
     #[test]
     fn test2() {
-        let output = part2(INPUT).unwrap();
+        init();
 
-        assert_eq!(12, output);
+        assert_eq!(12, part2(INPUT).unwrap());
     }
 }

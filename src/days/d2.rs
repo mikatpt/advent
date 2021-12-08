@@ -10,6 +10,9 @@ return x * y
 */
 
 use crate::Result;
+use tracing::instrument;
+
+#[instrument(skip_all)]
 pub fn part1(input: &str) -> Result<i32> {
     let (mut x, mut y) = (0, 0);
 
@@ -36,6 +39,7 @@ also track 3rd value, 'aim' - also starts at 0.
 - up x decreases aim by x
 - forward x increases horizontal pos by x, and depth by aim * x
 */
+#[instrument(skip_all)]
 pub fn part2(input: &str) -> Result<i32> {
     let (mut x, mut y, mut aim) = (0, 0, 0);
 
@@ -66,18 +70,21 @@ down 8
 forward 2";
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::*;
+    use crate::tracing::init;
 
     #[test]
     fn test() {
-        let output = part1(INPUT).unwrap();
-        assert_eq!(150, output);
+        init();
+
+        assert_eq!(150, part1(INPUT).unwrap());
     }
 
     #[test]
     fn test2() {
-        let output = part2(INPUT).unwrap();
-        assert_eq!(900, output);
+        init();
+
+        assert_eq!(900, part2(INPUT).unwrap());
     }
 }

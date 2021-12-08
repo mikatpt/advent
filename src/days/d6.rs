@@ -1,4 +1,3 @@
-use crate::Result;
 /*
 Day 6: Lanternfish
 
@@ -34,6 +33,10 @@ Find total fish after 80 days.
 
 */
 
+use crate::Result;
+use tracing::instrument;
+
+#[instrument(skip_all)]
 pub fn part1(input: &str) -> Result<u64> {
     let mut fish: Vec<u8> = input
         .split(',')
@@ -56,6 +59,7 @@ pub fn part1(input: &str) -> Result<u64> {
 
 use std::collections::HashMap;
 
+#[instrument(skip_all)]
 pub fn part2(input: &str) -> Result<u128> {
     let mut fish: HashMap<u8, u128> = input.split(',').fold(HashMap::new(), |mut map, char| {
         let n = char.parse().expect("Not a u8!");
@@ -78,6 +82,7 @@ pub fn part2(input: &str) -> Result<u128> {
     Ok(res)
 }
 
+#[instrument(skip_all)]
 pub fn solve(input: &str) -> Result<u64> {
     let mut fish: [u64; 9] = [0; 9];
     input
@@ -100,31 +105,27 @@ const INPUT: &str = "3,4,3,1,2";
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::tracing::init;
     use test::Bencher;
 
     #[test]
     fn test1() {
-        let output = part1(INPUT).unwrap();
+        init();
 
-        assert_eq!(5934, output);
+        assert_eq!(5934, part1(INPUT).unwrap());
     }
 
     #[test]
     fn test2() {
-        let output = part2(INPUT).unwrap();
+        init();
 
-        assert_eq!(26984457539, output);
+        assert_eq!(26984457539, part2(INPUT).unwrap());
     }
 
     #[bench]
     fn bench2(b: &mut Bencher) {
+        init();
+
         b.iter(|| part2(INPUT));
-    }
-
-    #[test]
-    fn test3() {
-        let output = solve(INPUT).unwrap();
-
-        assert_eq!(26984457539, output);
     }
 }

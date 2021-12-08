@@ -38,11 +38,13 @@ RSHIFT:
     100 >> 1 = 010
 */
 
-use crate::Result;
+use crate::{eyre, Result};
+use tracing::instrument;
 
+#[instrument(skip_all)]
 pub fn part1(s: &str) -> Result<u32> {
     // length of binary number
-    let cols = s.lines().next().ok_or("Empty input")?.len();
+    let cols = s.lines().next().ok_or_else(|| eyre!("Empty input"))?.len();
 
     // # of inputs
     let rows = s.lines().count();
@@ -64,7 +66,6 @@ pub fn part1(s: &str) -> Result<u32> {
     Ok(gamma * epsilon)
 }
 
-
 /*
 Find oxygen generator rating and C02 scrubber rating.
 
@@ -82,24 +83,30 @@ CRITERIA (c02):
 
 */
 
-
+#[instrument(skip_all)]
 pub fn part2(s: &str) -> Result<u32> {
     let rating = |common: bool| -> Result<u32> {
         let mut lines: Vec<_> = s.lines().collect();
 
         let mut i = 0;
         while lines.len() > 1 {
-            let ones = lines.iter().filter(|line| line.as_bytes()[i] == b'1').count();
+            let ones = lines
+                .iter()
+                .filter(|line| line.as_bytes()[i] == b'1')
+                .count();
             let bit = match (common, ones * 2 >= lines.len()) {
                 (true, true) | (false, false) => b'1',
                 _ => b'0',
             };
 
-            lines = lines.into_iter().filter(|line| line.as_bytes()[i] == bit).collect();
+            lines = lines
+                .into_iter()
+                .filter(|line| line.as_bytes()[i] == bit)
+                .collect();
             i += 1;
         }
 
-        let res = u32::from_str_radix(lines.first().ok_or("empty")?, 2)?;
+        let res = u32::from_str_radix(lines.first().ok_or_else(|| eyre!("empty"))?, 2)?;
 
         Ok(res)
     };
@@ -122,21 +129,21 @@ const INPUT: &str = "00100
 01010";
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::*;
+    use crate::tracing::init;
 
     #[test]
     fn test() {
-        let output = part1(INPUT).unwrap();
+        init();
 
-        assert_eq!(198, output);
+        assert_eq!(198, part1(INPUT).unwrap());
     }
 
     #[test]
     fn test2() {
-        let output = part2(INPUT).unwrap();
+        init();
 
-        assert_eq!(230, output);
-
+        assert_eq!(230, part2(INPUT).unwrap());
     }
 }
