@@ -1,12 +1,9 @@
 use crate::Result;
-use tracing::instrument;
 
-#[instrument(skip_all)]
 pub fn part1(input: &str) -> Result<i32> {
     Ok(0)
 }
 
-#[instrument(skip_all)]
 pub fn part2(input: &str) -> Result<i32> {
     Ok(0)
 }
