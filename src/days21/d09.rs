@@ -1,7 +1,7 @@
 use crate::Result;
 
 fn in_bounds(m: isize, n: isize, i: isize, j: isize) -> bool {
-    (i > -1 && i < m) && (j > -1 && j < n)
+    i > -1 && i < m && j > -1 && j < n
 }
 
 fn is_lowest(map: &[Vec<u32>], x: isize, y: isize) -> bool {
