@@ -88,35 +88,15 @@ gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::tracing::init;
     use eyre_test::test;
-    use test::Bencher;
 
     #[test]
     fn test1() {
-        init();
-
         assert_eq!(26, part1(INPUT).unwrap());
     }
 
     #[test]
     fn test2() {
-        init();
-
         assert_eq!(61229, part2(INPUT).unwrap());
-    }
-
-    #[bench]
-    fn bench1(b: &mut Bencher) {
-        init();
-
-        b.iter(|| part1(INPUT));
-    }
-
-    #[bench]
-    fn bench2(b: &mut Bencher) {
-        init();
-
-        b.iter(|| part2(INPUT));
     }
 }
