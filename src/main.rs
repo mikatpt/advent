@@ -1,7 +1,7 @@
 use std::{env, fs};
 use tracing::{info, instrument};
 
-use advent::days21::d9::{part1, part2};
+use advent::days21::d10::{part1, part2};
 use advent::Result;
 
 fn main() -> Result<()> {
