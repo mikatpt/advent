@@ -1,29 +1,33 @@
 use crate::Result;
 
 fn get_adjacent(i: usize, j: usize, m: usize, n: usize) -> Vec<(usize, usize)> {
-    [(0,1),(1,0),(-1,0),(0,-1)]
+    [(0, 1), (1, 0), (-1, 0), (0, -1)]
         .iter()
-        .map(|&(x,y)|  (i as isize + x, j as isize + y) )
-        .filter(|&(x,y)| {
+        .map(|&(x, y)| (i as isize + x, j as isize + y))
+        .filter(|&(x, y)| {
             let (m, n) = (m as isize, n as isize);
             x >= 0 && x < m && y >= 0 && y < n
         })
-        .map(|(x,y)| (x as usize, y as usize))
+        .map(|(x, y)| (x as usize, y as usize))
         .collect()
 }
 
 fn read(input: &str) -> Vec<Vec<Node>> {
-    let (m, n) = (input.lines().count(), input.lines().next().unwrap().chars().count());
+    let (m, n) = (
+        input.lines().count(),
+        input.lines().next().unwrap().chars().count(),
+    );
     input
         .lines()
         .enumerate()
         .map(|(i, line)| {
-            line.chars().enumerate().map(|(j, c)| {
-                Node {
+            line.chars()
+                .enumerate()
+                .map(|(j, c)| Node {
                     val: c.to_digit(10).unwrap(),
                     neighbors: get_adjacent(i, j, m, n),
-                }
-            }).collect()
+                })
+                .collect()
         })
         .collect()
 }
@@ -39,15 +43,22 @@ fn read2(input: &str) -> Vec<Vec<Node>> {
 
     let (rows, cols) = (m / 5, n / 5);
 
-    (0..m).into_iter().map(|i| {
-        (0..n).into_iter().map(|j| {
-            let next = tile[i % rows][j % cols] as usize
-                + i / rows
-                + j / cols - 1;
-            let neighbors = get_adjacent(i, j, m, n);
-            Node { neighbors, val: (next % 9 + 1) as u32 }
-        }).collect()
-    }).collect()
+    (0..m)
+        .into_iter()
+        .map(|i| {
+            (0..n)
+                .into_iter()
+                .map(|j| {
+                    let next = tile[i % rows][j % cols] as usize + i / rows + j / cols - 1;
+                    let neighbors = get_adjacent(i, j, m, n);
+                    Node {
+                        neighbors,
+                        val: (next % 9 + 1) as u32,
+                    }
+                })
+                .collect()
+        })
+        .collect()
 }
 
 use std::cmp::Reverse;
@@ -61,18 +72,18 @@ struct Node {
 
 fn djikstra(graph: Vec<Vec<Node>>) -> u32 {
     // Given a graph of nodes `graph`, and a final node `(m,n)`:
-    let (m,n) = (graph.len(), graph[0].len());
-    let end = (m - 1,n - 1);
+    let (m, n) = (graph.len(), graph[0].len());
+    let end = (m - 1, n - 1);
 
     // Give each node an initial distance-from-start value of infinity, except the initial node.
     let mut distances = vec![vec![u32::MAX; n]; m];
     distances[0][0] = 0;
 
-    let mut path: Vec<Vec<Option<(usize,usize)>>> = vec![vec![None; n]; m];
+    let mut path: Vec<Vec<Option<(usize, usize)>>> = vec![vec![None; n]; m];
     let mut queue = BinaryHeap::new();
 
     // Set the initial node as current.
-    queue.push(Reverse((distances[0][0], (0,0))));
+    queue.push(Reverse((distances[0][0], (0, 0))));
 
     while let Some(Reverse((current_dist, current))) = queue.pop() {
         let (x, y) = current;
@@ -85,7 +96,7 @@ fn djikstra(graph: Vec<Vec<Node>>) -> u32 {
 
         // For each node, consider all unvisited neighbors and calculate their distance.
         // This is the minimum of (distances[neighbor], distances[current] + edge)
-        for &(i,j) in &node.neighbors {
+        for &(i, j) in &node.neighbors {
             let edge = &graph[i][j].val; // Per the problem, we consider the target node's value our edge.
             let new_distance = distances[x][y] + edge;
 
@@ -95,12 +106,11 @@ fn djikstra(graph: Vec<Vec<Node>>) -> u32 {
                 distances[i][j] = new_distance;
 
                 // Save this in our queue - the next node searched will be the one with the shortest distance
-                queue.push(Reverse((new_distance, (i,j))));
+                queue.push(Reverse((new_distance, (i, j))));
 
                 // We can also save this information to reconstruct the actual path later.
                 path[i][j] = Some(current);
             }
-
         }
     }
 
@@ -113,11 +123,11 @@ fn djikstra(graph: Vec<Vec<Node>>) -> u32 {
     0
 }
 
-fn reconstruct_path(path: &[Vec<Option<(usize,usize)>>]) {
+fn reconstruct_path(path: &[Vec<Option<(usize, usize)>>]) {
     let (mut i, mut j) = (path.len() - 1, path[0].len() - 1);
-    let mut res = vec![(i,j)];
+    let mut res = vec![(i, j)];
 
-    while (i,j) != (0,0) {
+    while (i, j) != (0, 0) {
         if let Some(node) = path[i][j] {
             res.push(node);
             i = node.0;
