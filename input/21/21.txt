@@ -1,0 +1,2 @@
+player 1 starts at: 7
+player 1 starts at: 9
