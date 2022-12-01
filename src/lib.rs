@@ -4,6 +4,7 @@
 extern crate test;
 
 pub mod days21;
+pub mod days22;
 mod template;
 pub mod tracing;
 

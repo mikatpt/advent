@@ -6,9 +6,9 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-color-eyre = "0.5.7"
+color-eyre = "0.6.2"
 eyre-test = { path = "eyre_test" }
-itertools = "0.10"
-tracing = "0.1.13"
-tracing-subscriber = "0.2.5"
-tracing-error = "0.1.2"
+itertools = "0.10.5"
+tracing = "0.1.37"
+tracing-subscriber = { version = "0.3.16", features = ["env-filter"] }
+tracing-error = "0.2.0"
