@@ -1,25 +1,14 @@
-use std::{env, fs};
-use tracing::{info, instrument};
-
-use advent::days22::d01::{part1, part2};
+use advent::days22::d02::solve;
 use advent::Result;
 
 fn main() -> Result<()> {
-    advent::tracing::init();
+    dotenv::dotenv()?;
+    advent::trace::init();
 
-    let input = read_file()?;
+    let (p1, p2) = solve()?;
 
-    println!("Answer to part 1 is {}", part1(&input)?);
-    println!("Answer to part 2 is {}", part2(&input)?);
+    println!("Answer to part 1 is {}", p1);
+    println!("Answer to part 2 is {}", p2);
 
     Ok(())
-}
-
-#[instrument]
-fn read_file() -> Result<String> {
-    info!("Reading file from args");
-    let filename = env::args().nth(1).expect("Couldn't read file!");
-
-    let input = fs::read_to_string(filename)?;
-    Ok(input.trim().to_string())
 }
