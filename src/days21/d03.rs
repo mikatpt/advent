@@ -47,10 +47,7 @@ fn part2(s: &str) -> Result<u32> {
                 _ => b'0',
             };
 
-            lines = lines
-                .into_iter()
-                .filter(|line| line.as_bytes()[i] == bit)
-                .collect();
+            lines.retain(|line| line.as_bytes()[i] == bit);
             i += 1;
         }
 

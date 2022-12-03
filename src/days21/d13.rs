@@ -84,7 +84,7 @@ pub fn solve() -> Result<(i32, i32)> {
 
 fn part1(input: &str) -> Result<u32> {
     let (mut grid, folds) = read_input(input);
-    if let Some(&(coord, count)) = folds.get(0) {
+    if let Some(&(coord, count)) = folds.first() {
         grid = fold_grid(grid, coord, count);
     }
 

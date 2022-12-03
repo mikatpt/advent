@@ -1,5 +1,6 @@
 #![allow(dead_code, unused_variables)]
 #![feature(test)]
+#![feature(let_chains)]
 
 extern crate test;
 
@@ -13,16 +14,16 @@ pub use color_eyre::Result;
 use std::{env, fs, io::Write, path};
 use tracing::info;
 
+const YEAR: i32 = 22;
+
 pub fn get_input(day: i32) -> Result<String> {
     if day == 0 {
         return Err(color_eyre::eyre::eyre!("Please input a day."));
     }
-    let file = format!("{}/input/22/{day:02}.txt", env!("CARGO_MANIFEST_DIR"));
+    let file = format!("{}/input/{YEAR}/{day:02}.txt", env!("CARGO_MANIFEST_DIR"));
 
     let path = path::Path::new(&file);
     if path.exists() {
-        info!("input for day {day:02} already downloaded, reading from disk.");
-
         return Ok(fs::read_to_string(path)?);
     }
 
