@@ -1,4 +1,4 @@
-use crate::Result;
+use crate::{get_input, Result};
 use std::collections::HashMap;
 
 #[derive(Debug)]
@@ -11,6 +11,12 @@ struct Line {
 struct Coordinate {
     x: i32,
     y: i32,
+}
+
+pub fn solve() -> Result<(i32, i32)> {
+    let input = get_input(1)?;
+
+    Ok((part1(&input)?, part2(&input)?))
 }
 
 fn read_input(input: &str) -> impl Iterator<Item = Line> + '_ {
@@ -38,7 +44,7 @@ fn mutate(grid: &mut HashMap<(i32, i32), u8>, count: &mut i32, entry: (i32, i32)
     }
 }
 
-fn solve(line: &Line, grid: &mut HashMap<(i32, i32), u8>, count: &mut i32, x: bool) {
+fn solve1(line: &Line, grid: &mut HashMap<(i32, i32), u8>, count: &mut i32, x: bool) {
     let (mut start, mut end) = match x {
         true => (line.start.y, line.end.y),
         false => (line.start.x, line.end.x),
@@ -75,7 +81,7 @@ fn solve_diag(line: &Line, grid: &mut HashMap<(i32, i32), u8>, count: &mut i32) 
     }
 }
 
-pub fn part1(input: &str) -> Result<i32> {
+fn part1(input: &str) -> Result<i32> {
     let mut count: i32 = 0;
     let mut grid: HashMap<(i32, i32), u8> = HashMap::new();
 
@@ -83,16 +89,16 @@ pub fn part1(input: &str) -> Result<i32> {
 
     for line in lines {
         if line.start.x == line.end.x {
-            solve(&line, &mut grid, &mut count, true);
+            solve1(&line, &mut grid, &mut count, true);
         } else if line.start.y == line.end.y {
-            solve(&line, &mut grid, &mut count, false);
+            solve1(&line, &mut grid, &mut count, false);
         }
     }
 
     Ok(count)
 }
 
-pub fn part2(input: &str) -> Result<i32> {
+fn part2(input: &str) -> Result<i32> {
     let mut count: i32 = 0;
     let mut grid: HashMap<(i32, i32), u8> = HashMap::new();
 
@@ -100,9 +106,9 @@ pub fn part2(input: &str) -> Result<i32> {
 
     for line in lines {
         if line.start.x == line.end.x {
-            solve(&line, &mut grid, &mut count, true);
+            solve1(&line, &mut grid, &mut count, true);
         } else if line.start.y == line.end.y {
-            solve(&line, &mut grid, &mut count, false);
+            solve1(&line, &mut grid, &mut count, false);
         } else {
             solve_diag(&line, &mut grid, &mut count);
         }
@@ -125,15 +131,10 @@ const INPUT: &str = "0,9 -> 5,9
 #[cfg(test)]
 mod tests {
     use super::*;
-    use eyre_test::test;
 
     #[test]
     fn test1() {
         assert_eq!(5, part1(INPUT).unwrap());
-    }
-
-    #[test]
-    fn test2() {
         assert_eq!(12, part2(INPUT).unwrap());
     }
 }

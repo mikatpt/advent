@@ -1,4 +1,4 @@
-use crate::Result;
+use crate::{get_input, Result};
 
 fn get_adjacent(i: usize, j: usize, m: usize, n: usize) -> Vec<(usize, usize)> {
     [(0, 1), (1, 0), (-1, 0), (0, -1)]
@@ -140,14 +140,20 @@ fn reconstruct_path(path: &[Vec<Option<(usize, usize)>>]) {
     println!("{:?}", res);
 }
 
-pub fn part1(input: &str) -> Result<u32> {
+pub fn solve() -> Result<(i32, i32)> {
+    let input = get_input(1)?;
+
+    Ok((part1(&input)? as i32, part2(&input)? as i32))
+}
+
+fn part1(input: &str) -> Result<u32> {
     let graph = read(input);
     let min = djikstra(graph);
 
     Ok(min)
 }
 
-pub fn part2(input: &str) -> Result<u32> {
+fn part2(input: &str) -> Result<u32> {
     let graph = read2(input);
     let min = djikstra(graph);
 
@@ -168,14 +174,10 @@ const INPUT: &str = "1163751742
 #[cfg(test)]
 mod tests {
     use super::*;
-    use eyre_test::test;
 
     #[test]
     fn test1() {
         assert_eq!(40, part1(INPUT).unwrap());
-    }
-    #[test]
-    fn test2() {
         assert_eq!(315, part2(INPUT).unwrap());
     }
 }

@@ -1,4 +1,4 @@
-use crate::Result;
+use crate::{get_input, Result};
 use std::collections::HashMap;
 
 fn get_info() -> (HashMap<char, char>, HashMap<char, u32>, HashMap<char, u32>) {
@@ -9,7 +9,13 @@ fn get_info() -> (HashMap<char, char>, HashMap<char, u32>, HashMap<char, u32>) {
     )
 }
 
-pub fn part1(input: &str) -> Result<u32> {
+pub fn solve() -> Result<(i32, i32)> {
+    let input = get_input(1)?;
+
+    Ok((part1(&input)? as i32, part2(&input)? as i32))
+}
+
+fn part1(input: &str) -> Result<u32> {
     let mut score = 0;
     let mut stack = Vec::<char>::new();
     let (closers, illegal, _) = get_info();
@@ -39,7 +45,7 @@ pub fn part1(input: &str) -> Result<u32> {
     Ok(score)
 }
 
-pub fn part2(input: &str) -> Result<u64> {
+fn part2(input: &str) -> Result<u64> {
     let mut res = Vec::<u64>::new();
     let mut stack = Vec::<char>::new();
     let (closers, _, incomplete) = get_info();
@@ -80,15 +86,10 @@ const INPUT: &str = "[({(<(())[]>[[{[]{<()<>>
 #[cfg(test)]
 mod tests {
     use super::*;
-    use eyre_test::test;
 
     #[test]
     fn test1() {
         assert_eq!(26397, part1(INPUT).unwrap());
-    }
-
-    #[test]
-    fn test2() {
         assert_eq!(288957, part2(INPUT).unwrap());
     }
 }

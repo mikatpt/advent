@@ -1,4 +1,4 @@
-use crate::Result;
+use crate::{get_input, Result};
 use std::collections::{HashMap, HashSet};
 
 type Graph<'a> = HashMap<&'a str, HashSet<&'a str>>;
@@ -55,14 +55,20 @@ fn count_paths<'a, 'b>(
     res
 }
 
-pub fn part1(input: &str) -> Result<u32> {
+pub fn solve() -> Result<(i32, i32)> {
+    let input = get_input(1)?;
+
+    Ok((part1(&input)? as i32, part2(&input)? as i32))
+}
+
+fn part1(input: &str) -> Result<u32> {
     let graph = build_graph_from_str(input);
     let res = count_paths(&graph, "start", &mut HashMap::from([("start", 3)]), true);
 
     Ok(res)
 }
 
-pub fn part2(input: &str) -> Result<u32> {
+fn part2(input: &str) -> Result<u32> {
     let graph = build_graph_from_str(input);
     let res = count_paths(&graph, "start", &mut HashMap::from([("start", 3)]), false);
     Ok(res)
@@ -90,15 +96,10 @@ kj-dc";
 #[cfg(test)]
 mod tests {
     use super::*;
-    use eyre_test::test;
 
     #[test]
     fn test1() {
         assert_eq!(10, part1(INPUT).unwrap());
-    }
-
-    #[test]
-    fn test2() {
         assert_eq!(19, part1(INPUT2).unwrap());
     }
 

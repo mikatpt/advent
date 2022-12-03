@@ -1,6 +1,14 @@
-use crate::{eyre, Result};
+use crate::{
+    eyre, {get_input, Result},
+};
 
-pub fn part1(s: &str) -> Result<u32> {
+pub fn solve() -> Result<(i32, i32)> {
+    let input = get_input(1)?;
+
+    Ok((part1(&input)? as i32, part2(&input)? as i32))
+}
+
+fn part1(s: &str) -> Result<u32> {
     // length of binary number
     let cols = s.lines().next().ok_or_else(|| eyre!("Empty input"))?.len();
 
@@ -24,7 +32,7 @@ pub fn part1(s: &str) -> Result<u32> {
     Ok(gamma * epsilon)
 }
 
-pub fn part2(s: &str) -> Result<u32> {
+fn part2(s: &str) -> Result<u32> {
     let rating = |common: bool| -> Result<u32> {
         let mut lines: Vec<_> = s.lines().collect();
 
@@ -71,15 +79,10 @@ const INPUT: &str = "00100
 #[cfg(test)]
 mod tests {
     use super::*;
-    use eyre_test::test;
 
     #[test]
-    fn test() {
+    fn test1() {
         assert_eq!(198, part1(INPUT).unwrap());
-    }
-
-    #[test]
-    fn test2() {
         assert_eq!(230, part2(INPUT).unwrap());
     }
 }

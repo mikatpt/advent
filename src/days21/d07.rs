@@ -1,6 +1,6 @@
-use crate::Result;
+use crate::{get_input, Result};
 
-fn solve(input: &str, pt1: bool) -> color_eyre::Result<i32> {
+fn solve1(input: &str, pt1: bool) -> color_eyre::Result<i32> {
     let mut res = i32::MAX;
     let nums: Vec<i32> = input.split(',').map(|c| c.parse().unwrap()).collect();
     let max = *nums.iter().max().unwrap();
@@ -23,12 +23,18 @@ fn get_fuel(i: i32, pt1: bool) -> i32 {
     i * (i + 1) / 2
 }
 
-pub fn part1(input: &str) -> Result<i32> {
-    solve(input, true)
+pub fn solve() -> Result<(i32, i32)> {
+    let input = get_input(1)?;
+
+    Ok((part1(&input)?, part2(&input)?))
 }
 
-pub fn part2(input: &str) -> Result<i32> {
-    solve(input, false)
+fn part1(input: &str) -> Result<i32> {
+    solve1(input, true)
+}
+
+fn part2(input: &str) -> Result<i32> {
+    solve1(input, false)
 }
 
 const INPUT: &str = "16,1,2,0,4,2,7,1,2,14";
@@ -36,16 +42,11 @@ const INPUT: &str = "16,1,2,0,4,2,7,1,2,14";
 #[cfg(test)]
 mod tests {
     use super::*;
-    use eyre_test::test;
     use test::Bencher;
 
     #[test]
     fn test1() {
         assert_eq!(37, part1(INPUT).unwrap());
-    }
-
-    #[test]
-    fn test2() {
         assert_eq!(168, part2(INPUT).unwrap());
     }
 

@@ -1,4 +1,6 @@
-use crate::{eyre, Result};
+use crate::{
+    eyre, {get_input, Result},
+};
 
 struct Target {
     x: (i32, i32),
@@ -61,14 +63,20 @@ fn find_valid(t: &Target) -> (i32, i32) {
     (count, highest)
 }
 
-pub fn part1(input: &str) -> Result<i32> {
+pub fn solve() -> Result<(i32, i32)> {
+    let input = get_input(1)?;
+
+    Ok((part1(&input)?, part2(&input)?))
+}
+
+fn part1(input: &str) -> Result<i32> {
     let target = read(input).ok_or_else(|| eyre!("malformed input"))?;
     let (_, highest) = find_valid(&target);
 
     Ok(highest)
 }
 
-pub fn part2(input: &str) -> Result<i32> {
+fn part2(input: &str) -> Result<i32> {
     let target = read(input).ok_or_else(|| eyre!("malformed input"))?;
     let (count, _) = find_valid(&target);
     Ok(count)
@@ -80,20 +88,15 @@ const PUZZLE_INPUT: &str = "target area: x=32..65, y=-225..-177";
 #[cfg(test)]
 mod tests {
     use super::*;
-    use eyre_test::test;
 
     #[test]
     fn test1() {
         assert_eq!(45, part1(INPUT).unwrap());
+        assert_eq!(0, part2(INPUT).unwrap());
     }
 
     #[test]
     fn solve() {
         dbg!(part2(PUZZLE_INPUT).unwrap());
-    }
-
-    #[test]
-    fn test2() {
-        assert_eq!(0, part2(INPUT).unwrap());
     }
 }

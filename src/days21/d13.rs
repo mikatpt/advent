@@ -1,4 +1,4 @@
-use crate::Result;
+use crate::{get_input, Result};
 use std::collections::HashSet;
 
 type Grid = HashSet<(u32, u32)>;
@@ -76,7 +76,13 @@ fn print_grid(grid: Grid) {
     }
 }
 
-pub fn part1(input: &str) -> Result<u32> {
+pub fn solve() -> Result<(i32, i32)> {
+    let input = get_input(1)?;
+
+    Ok((part1(&input)? as i32, part2(&input)? as i32))
+}
+
+fn part1(input: &str) -> Result<u32> {
     let (mut grid, folds) = read_input(input);
     if let Some(&(coord, count)) = folds.get(0) {
         grid = fold_grid(grid, coord, count);
@@ -85,7 +91,7 @@ pub fn part1(input: &str) -> Result<u32> {
     Ok(grid.len() as u32)
 }
 
-pub fn part2(input: &str) -> Result<i32> {
+fn part2(input: &str) -> Result<i32> {
     let (mut grid, folds) = read_input(input);
     for (coord, count) in folds {
         grid = fold_grid(grid, coord, count);
@@ -120,15 +126,10 @@ fold along x=5";
 #[cfg(test)]
 mod tests {
     use super::*;
-    use eyre_test::test;
 
     #[test]
     fn test1() {
         assert_eq!(17, part1(INPUT).unwrap());
-    }
-
-    #[test]
-    fn test2() {
         assert_eq!(0, part2(INPUT).unwrap());
     }
 }

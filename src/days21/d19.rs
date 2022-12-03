@@ -1,4 +1,4 @@
-use crate::Result;
+use crate::{get_input, Result};
 use itertools::Itertools;
 use std::collections::{HashMap, HashSet};
 
@@ -81,7 +81,13 @@ fn find_beacons(scanners: Scanners) -> HashSet<(i32, i32, i32)> {
     beacons
 }
 
-pub fn part1(input: &str) -> Result<usize> {
+pub fn solve() -> Result<(i32, i32)> {
+    let input = get_input(1)?;
+
+    Ok((part1(&input)? as i32, part2(&input)? as i32))
+}
+
+fn part1(input: &str) -> Result<usize> {
     let scanners = read(input);
     let mut beacons: Vec<(i32, i32, i32)> = find_beacons(scanners).into_iter().collect();
     beacons.sort_unstable();
@@ -90,7 +96,7 @@ pub fn part1(input: &str) -> Result<usize> {
     Ok(beacons.len())
 }
 
-pub fn part2(input: &str) -> Result<i32> {
+fn part2(input: &str) -> Result<i32> {
     Ok(0)
 }
 
@@ -99,15 +105,10 @@ const INPUT: &str = include_str!("../../input/21/19_test.txt");
 #[cfg(test)]
 mod tests {
     use super::*;
-    // use eyre_test::test;
 
     #[test]
     fn test1() {
         assert_eq!(79, part1(INPUT).unwrap());
-    }
-
-    #[test]
-    fn test2() {
         assert_eq!(0, part2(INPUT).unwrap());
     }
 }

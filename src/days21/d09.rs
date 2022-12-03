@@ -1,4 +1,4 @@
-use crate::Result;
+use crate::{get_input, Result};
 
 fn in_bounds(m: isize, n: isize, i: isize, j: isize) -> bool {
     i > -1 && i < m && j > -1 && j < n
@@ -14,7 +14,13 @@ fn is_lowest(map: &[Vec<u32>], x: isize, y: isize) -> bool {
     }
     true
 }
-pub fn part1(input: &str) -> Result<u32> {
+pub fn solve() -> Result<(i32, i32)> {
+    let input = get_input(1)?;
+
+    Ok((part1(&input)? as i32, part2(&input)? as i32))
+}
+
+fn part1(input: &str) -> Result<u32> {
     let mut res = 0;
 
     let map: Vec<Vec<u32>> = input
@@ -35,7 +41,7 @@ pub fn part1(input: &str) -> Result<u32> {
 
 use std::collections::{HashSet, VecDeque};
 
-pub fn part2(input: &str) -> Result<u32> {
+fn part2(input: &str) -> Result<u32> {
     let mut basins: Vec<u32> = vec![];
 
     let map: Vec<Vec<u32>> = input
@@ -91,15 +97,10 @@ const INPUT: &str = "2199943210
 #[cfg(test)]
 mod tests {
     use super::*;
-    use eyre_test::test;
 
     #[test]
     fn test1() {
         assert_eq!(15, part1(INPUT).unwrap());
-    }
-
-    #[test]
-    fn test2() {
         assert_eq!(1134, part2(INPUT).unwrap());
     }
 }

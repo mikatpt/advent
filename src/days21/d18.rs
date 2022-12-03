@@ -1,4 +1,6 @@
-use crate::{eyre, Result};
+use crate::{
+    eyre, {get_input, Result},
+};
 use std::collections::VecDeque;
 type Snails = VecDeque<Snail>;
 
@@ -169,7 +171,13 @@ fn add_pairs(mut first: Snails, second: Snails) -> Snails {
     first
 }
 
-pub fn part1(input: &str) -> Result<u32> {
+pub fn solve() -> Result<(i32, i32)> {
+    let input = get_input(1)?;
+
+    Ok((part1(&input)? as i32, part2(&input)? as i32))
+}
+
+fn part1(input: &str) -> Result<u32> {
     let first = input
         .lines()
         .next()
@@ -182,7 +190,7 @@ pub fn part1(input: &str) -> Result<u32> {
     Ok(count(&res, 0, res.len() - 1))
 }
 
-pub fn part2(input: &str) -> Result<u32> {
+fn part2(input: &str) -> Result<u32> {
     let mut max = 0;
     let lines: Vec<&str> = input.lines().collect();
 
@@ -216,19 +224,14 @@ const INPUT2: &str = "[[[0,[5,8]],[[1,7],[9,6]]],[[4,[1,2]],[[1,4],2]]]
 #[cfg(test)]
 mod tests {
     use super::*;
-    use eyre_test::test;
     use test::Bencher;
 
     #[test]
     fn test1() {
         assert_eq!(143, part1("[[1,2],[[3,4],5]]").unwrap());
+        assert_eq!(3993, part2(INPUT2).unwrap());
         assert_eq!(1384, part1("[[[[0,7],4],[[7,8],[6,0]]],[8,1]]").unwrap());
         assert_eq!(445, part1("[[[[1,1],[2,2]],[3,3]],[4,4]]").unwrap());
-    }
-
-    #[test]
-    fn test2() {
-        assert_eq!(3993, part2(INPUT2).unwrap());
     }
 
     static FILE: &str = include_str!("../../input/21/18.txt");

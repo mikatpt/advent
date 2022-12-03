@@ -1,4 +1,4 @@
-use crate::Result;
+use crate::{get_input, Result};
 
 fn read_input(input: &str) -> Vec<Vec<u32>> {
     input
@@ -37,15 +37,21 @@ fn dfs(octopi: &mut Vec<Vec<u32>>, i: isize, j: isize) {
             stack.extend(
                 adjacent
                     .iter()
-                    .filter(|(a,b)| x + a >= 0 && x + a < m && y + b >= 0 && y + b < n )
-                    .map(|(a,b)| (x + a, y + b))
+                    .filter(|(a, b)| x + a >= 0 && x + a < m && y + b >= 0 && y + b < n)
+                    .map(|(a, b)| (x + a, y + b)),
             );
         }
         *item += 1;
     }
 }
 
-pub fn part1(input: &str) -> Result<u32> {
+pub fn solve() -> Result<(i32, i32)> {
+    let input = get_input(1)?;
+
+    Ok((part1(&input)? as i32, part2(&input)? as i32))
+}
+
+fn part1(input: &str) -> Result<u32> {
     let mut octopi = read_input(input);
     let mut res = 0;
 
@@ -68,7 +74,7 @@ pub fn part1(input: &str) -> Result<u32> {
     Ok(res)
 }
 
-pub fn part2(input: &str) -> Result<i32> {
+fn part2(input: &str) -> Result<i32> {
     let mut octopi = read_input(input);
 
     let mut x = 1;
@@ -109,15 +115,10 @@ const INPUT: &str = "5483143223
 #[cfg(test)]
 mod tests {
     use super::*;
-    use eyre_test::test;
 
     #[test]
     fn test1() {
         assert_eq!(1656, part1(INPUT).unwrap());
-    }
-
-    #[test]
-    fn test2() {
         assert_eq!(195, part2(INPUT).unwrap());
     }
 }

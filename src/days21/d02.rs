@@ -1,6 +1,12 @@
-use crate::Result;
+use crate::{get_input, Result};
 
-pub fn part1(input: &str) -> Result<i32> {
+pub fn solve() -> Result<(i32, i32)> {
+    let input = get_input(1)?;
+
+    Ok((part1(&input)?, part2(&input)?))
+}
+
+fn part1(input: &str) -> Result<i32> {
     let (mut x, mut y) = (0, 0);
 
     for line in input.split_terminator('\n') {
@@ -19,7 +25,7 @@ pub fn part1(input: &str) -> Result<i32> {
     Ok(x * y)
 }
 
-pub fn part2(input: &str) -> Result<i32> {
+fn part2(input: &str) -> Result<i32> {
     let (mut x, mut y, mut aim) = (0, 0, 0);
 
     for line in input.split_terminator('\n') {
@@ -51,15 +57,10 @@ forward 2";
 #[cfg(test)]
 mod tests {
     use super::*;
-    use eyre_test::test;
 
     #[test]
-    fn test() {
+    fn test1() {
         assert_eq!(150, part1(INPUT).unwrap());
-    }
-
-    #[test]
-    fn test2() {
         assert_eq!(900, part2(INPUT).unwrap());
     }
 }

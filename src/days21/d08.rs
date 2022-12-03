@@ -1,4 +1,4 @@
-use crate::Result;
+use crate::{get_input, Result};
 
 fn count_unique(count: i32, digit: &str) -> i32 {
     count
@@ -12,7 +12,13 @@ fn combine_counts(count: i32, (_, digits): (&str, &str)) -> i32 {
     count + digits.split_whitespace().fold(0, count_unique)
 }
 
-pub fn part1(input: &str) -> Result<i32> {
+pub fn solve() -> Result<(i32, i32)> {
+    let input = get_input(1)?;
+
+    Ok((part1(&input)?, part2(&input)?))
+}
+
+fn part1(input: &str) -> Result<i32> {
     let count = input
         .lines()
         .map(|line| line.split_once(" | ").expect("malformed input"))
@@ -64,7 +70,7 @@ fn decode_line(signals: &str, digits: &str) -> i32 {
     num.parse().unwrap()
 }
 
-pub fn part2(input: &str) -> Result<i32> {
+fn part2(input: &str) -> Result<i32> {
     let mut res = 0;
     for line in input.lines() {
         let (signals, digits) = line.split_once(" | ").expect("malformed input");
@@ -88,15 +94,10 @@ gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
 #[cfg(test)]
 mod tests {
     use super::*;
-    use eyre_test::test;
 
     #[test]
     fn test1() {
         assert_eq!(26, part1(INPUT).unwrap());
-    }
-
-    #[test]
-    fn test2() {
         assert_eq!(61229, part2(INPUT).unwrap());
     }
 }

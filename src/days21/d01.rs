@@ -1,6 +1,12 @@
-use crate::Result;
+use crate::{get_input, Result};
 
-pub fn part1(input: &str) -> Result<i32> {
+pub fn solve() -> Result<(i32, i32)> {
+    let input = get_input(1)?;
+
+    Ok((part1(&input)?, part2(&input)?))
+}
+
+fn part1(input: &str) -> Result<i32> {
     let mut res = 0;
 
     let mut lines = input.split_whitespace();
@@ -23,7 +29,7 @@ pub fn part1(input: &str) -> Result<i32> {
     Ok(res)
 }
 
-pub fn part2(input: &str) -> Result<i32> {
+fn part2(input: &str) -> Result<i32> {
     let mut res = 0;
 
     let lines: Vec<_> = input
@@ -54,15 +60,10 @@ const INPUT: &str = " 199 200 208 210 200 207 240 269 260 263 ";
 #[cfg(test)]
 mod tests {
     use super::*;
-    use eyre_test::test;
 
     #[test]
     fn test1() {
         assert_eq!(7, part1(INPUT).unwrap());
-    }
-
-    #[test]
-    fn test2() {
         assert_eq!(5, part2(INPUT).unwrap());
     }
 }

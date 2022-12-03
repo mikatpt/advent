@@ -1,6 +1,12 @@
-use crate::Result;
+use crate::{get_input, Result};
 
-pub fn part1(input: &str) -> Result<u64> {
+pub fn solve() -> Result<(i32, i32)> {
+    let input = get_input(1)?;
+
+    Ok((part1(&input)? as i32, part2(&input)? as i32))
+}
+
+fn part1(input: &str) -> Result<u64> {
     let mut fish: Vec<u8> = input
         .split(',')
         .map(|c| c.parse().expect("Not a u8!"))
@@ -22,7 +28,7 @@ pub fn part1(input: &str) -> Result<u64> {
 
 use std::collections::HashMap;
 
-pub fn part2(input: &str) -> Result<u128> {
+fn part2(input: &str) -> Result<u128> {
     let mut fish: HashMap<u8, u128> = input.split(',').fold(HashMap::new(), |mut map, char| {
         let n = char.parse().expect("Not a u8!");
         *map.entry(n).or_default() += 1;
@@ -44,7 +50,7 @@ pub fn part2(input: &str) -> Result<u128> {
     Ok(res)
 }
 
-pub fn solve(input: &str) -> Result<u64> {
+fn solve1(input: &str) -> Result<u64> {
     let mut fish: [u64; 9] = [0; 9];
     input
         .split(',')
@@ -66,16 +72,11 @@ const INPUT: &str = "3,4,3,1,2";
 #[cfg(test)]
 mod tests {
     use super::*;
-    use eyre_test::test;
     use test::Bencher;
 
     #[test]
     fn test1() {
         assert_eq!(5934, part1(INPUT).unwrap());
-    }
-
-    #[test]
-    fn test2() {
         assert_eq!(26984457539, part2(INPUT).unwrap());
     }
 

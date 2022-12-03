@@ -1,4 +1,6 @@
-use crate::{eyre, Result};
+use crate::{
+    eyre, {get_input, Result},
+};
 use std::collections::HashMap;
 
 struct Board {
@@ -8,21 +10,13 @@ struct Board {
     won: bool,
 }
 
-pub fn part1(input: &str) -> Result<u16> {
-    let mut lines = input.lines();
-    let rand_ints = lines
-        .next()
-        .ok_or_else(|| eyre!("Empty!"))?
-        .split(',')
-        .map(|c| c.parse::<u16>().unwrap());
-    lines.next();
+pub fn solve() -> Result<(i32, i32)> {
+    let input = get_input(1)?;
 
-    let game = populate_boards(&mut lines);
-
-    solve(game, rand_ints, true)
+    Ok((part1(&input)? as i32, part2(&input)? as i32))
 }
 
-pub fn part2(input: &str) -> Result<u16> {
+fn part1(input: &str) -> Result<u16> {
     let mut lines = input.lines();
     let rand_ints = lines
         .next()
@@ -33,7 +27,21 @@ pub fn part2(input: &str) -> Result<u16> {
 
     let game = populate_boards(&mut lines);
 
-    solve(game, rand_ints, false)
+    solve1(game, rand_ints, true)
+}
+
+fn part2(input: &str) -> Result<u16> {
+    let mut lines = input.lines();
+    let rand_ints = lines
+        .next()
+        .ok_or_else(|| eyre!("Empty!"))?
+        .split(',')
+        .map(|c| c.parse::<u16>().unwrap());
+    lines.next();
+
+    let game = populate_boards(&mut lines);
+
+    solve1(game, rand_ints, false)
 }
 
 fn populate_boards(lines: &mut core::str::Lines) -> Vec<Board> {
@@ -75,7 +83,7 @@ fn calc_sum(i: u16, map: &mut HashMap<u16, (usize, usize, bool)>) -> Result<u16>
     Ok(sum * i)
 }
 
-fn solve<I>(mut game: Vec<Board>, rand_ints: I, pt_1: bool) -> Result<u16>
+fn solve1<I>(mut game: Vec<Board>, rand_ints: I, pt_1: bool) -> Result<u16>
 where
     I: Iterator<Item = u16>,
 {
@@ -129,15 +137,10 @@ const INPUT: &str = "7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,
 #[cfg(test)]
 mod tests {
     use super::*;
-    use eyre_test::test;
 
     #[test]
     fn test1() {
         assert_eq!(4512, part1(INPUT).unwrap());
-    }
-
-    #[test]
-    fn test2() {
         assert_eq!(1924, part2(INPUT).unwrap());
     }
 }

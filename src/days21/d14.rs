@@ -1,4 +1,4 @@
-use crate::Result;
+use crate::{get_input, Result};
 use std::collections::HashMap;
 
 type Cache = HashMap<(char, char), i64>;
@@ -41,7 +41,7 @@ fn get_max_min(cache: Cache) -> (i64, i64) {
 
 /// Each pair will result in the following iteration including (pair.0, next) AND (next, pair.1)
 /// where next = the character to insert based on the given instructions.
-fn solve(input: &str, iterations: usize) -> i64 {
+fn solve1(input: &str, iterations: usize) -> i64 {
     let (mut cache, instructions) = read(input);
 
     for _ in 0..iterations {
@@ -61,12 +61,18 @@ fn solve(input: &str, iterations: usize) -> i64 {
     max - min
 }
 
-pub fn part1(input: &str) -> Result<i64> {
-    Ok(solve(input, 10))
+pub fn solve() -> Result<(i32, i32)> {
+    let input = get_input(1)?;
+
+    Ok((part1(&input)? as i32, part2(&input)? as i32))
 }
 
-pub fn part2(input: &str) -> Result<i64> {
-    Ok(solve(input, 40))
+fn part1(input: &str) -> Result<i64> {
+    Ok(solve1(input, 10))
+}
+
+fn part2(input: &str) -> Result<i64> {
+    Ok(solve1(input, 40))
 }
 
 const INPUT: &str = "NNCB
@@ -91,14 +97,10 @@ CN -> C";
 #[cfg(test)]
 mod tests {
     use super::*;
-    use eyre_test::test;
 
     #[test]
     fn test1() {
         assert_eq!(1588, part1(INPUT).unwrap());
-    }
-    #[test]
-    fn test2() {
         assert_eq!(2188189693529, part2(INPUT).unwrap());
     }
 }
