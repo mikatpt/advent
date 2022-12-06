@@ -47,34 +47,18 @@ fn parse(input: &str) -> Option<Input> {
     Some((stacks, actions))
 }
 
-fn part1(input: &str) -> Option<String> {
-    let (mut stacks, actions) = parse(input)?;
-
-    for (amount, from, to) in actions {
-        for _ in 0..amount {
-            let item = stacks[from].pop_back()?;
-            stacks[to].push_back(item);
-        }
-    }
-    let mut res = String::new();
-
-    for stack in stacks.iter() {
-        if let Some(item) = stack.back() {
-            res.push(*item);
-        }
-    }
-
-    Some(res)
-}
-
-fn part2(input: &str) -> Option<String> {
+fn solution(input: &str, part: i32) -> Option<String> {
     let (mut stacks, actions) = parse(input)?;
 
     for (amount, from, to) in actions {
         let mut middleman = VecDeque::new();
         for _ in 0..amount {
             let item = stacks[from].pop_back()?;
-            middleman.push_front(item);
+            if part == 1 {
+                middleman.push_back(item);
+            } else {
+                middleman.push_front(item);
+            }
         }
         stacks[to].extend(middleman.into_iter());
     }
@@ -87,6 +71,14 @@ fn part2(input: &str) -> Option<String> {
     }
 
     Some(res)
+}
+
+fn part1(input: &str) -> Option<String> {
+    solution(input, 1)
+}
+
+fn part2(input: &str) -> Option<String> {
+    solution(input, 2)
 }
 
 const INPUT: &str = "    [D]    
