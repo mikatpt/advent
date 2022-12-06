@@ -92,11 +92,6 @@ mod tests {
     #[test]
     fn test1() {
         assert_eq!(45, part1(INPUT).unwrap());
-        assert_eq!(0, part2(INPUT).unwrap());
-    }
-
-    #[test]
-    fn solve() {
-        dbg!(part2(PUZZLE_INPUT).unwrap());
+        assert_eq!(112, part2(INPUT).unwrap());
     }
 }
