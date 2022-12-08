@@ -1,6 +1,7 @@
 #![allow(dead_code, unused_variables)]
 #![feature(test)]
 #![feature(let_chains)]
+#![feature(let_else)]
 
 extern crate test;
 
