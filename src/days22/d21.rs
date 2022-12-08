@@ -22,6 +22,7 @@ mod tests {
 
     #[test]
     fn testing() {
+        crate::trace::init();
         assert_eq!(0, part1(INPUT).unwrap());
         assert_eq!(0, part2(INPUT).unwrap());
     }
