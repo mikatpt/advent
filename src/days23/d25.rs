@@ -1,11 +1,10 @@
 use crate::{get_input, Result};
-
 /*
 
 */
 
 pub fn solve() -> Result<(i32, i32)> {
-    let input = get_input(0)?;
+    let input = get_input(25)?;
 
     Ok((part1(&input).unwrap(), part2(&input).unwrap()))
 }

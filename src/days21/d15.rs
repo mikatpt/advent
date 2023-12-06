@@ -44,10 +44,8 @@ fn read2(input: &str) -> Vec<Vec<Node>> {
     let (rows, cols) = (m / 5, n / 5);
 
     (0..m)
-        .into_iter()
         .map(|i| {
             (0..n)
-                .into_iter()
                 .map(|j| {
                     let next = tile[i % rows][j % cols] as usize + i / rows + j / cols - 1;
                     let neighbors = get_adjacent(i, j, m, n);

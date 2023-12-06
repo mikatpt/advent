@@ -1,12 +1,12 @@
 #![allow(dead_code, unused_variables)]
 #![feature(test)]
 #![feature(let_chains)]
-#![feature(let_else)]
 
 extern crate test;
 
 pub mod days21;
 pub mod days22;
+pub mod days23;
 pub mod trace;
 
 pub use color_eyre::eyre::eyre;
@@ -15,7 +15,7 @@ pub use color_eyre::Result;
 use std::{env, fs, io::Write, path};
 use tracing::info;
 
-const YEAR: i32 = 22;
+const YEAR: i32 = 23;
 
 pub fn get_input(day: i32) -> Result<String> {
     if day == 0 {
@@ -38,11 +38,12 @@ fn download_input(path: &path::Path, day: i32) -> Result<String> {
 
     let session = env::var("SESSION")?;
     let cookie = format!("session={}", session);
-    let url = format!("https://adventofcode.com/2022/day/{}/input", day);
+    let url = format!("https://adventofcode.com/20{YEAR}/day/{}/input", day);
     let client = reqwest::blocking::Client::new();
 
     let text = client.get(url).header("cookie", cookie).send()?.text()?;
 
+    fs::create_dir_all(path.parent().expect("is dir"))?;
     let mut file = fs::File::create(path)?;
     file.write_all(text.as_bytes())?;
     info!("saved input to disk");

@@ -1,4 +1,4 @@
-use advent::days22::d13::solve;
+use advent::days23::d02::solve;
 use advent::Result;
 
 fn main() -> Result<()> {

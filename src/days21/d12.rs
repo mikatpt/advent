@@ -25,10 +25,10 @@ fn build_graph_from_str(input: &str) -> Graph {
     res
 }
 
-fn count_paths<'a, 'b>(
+fn count_paths<'a>(
     graph: &Graph<'a>,
     node: &'a str,
-    visited: &'b mut HashMap<&'a str, u8>,
+    visited: &mut HashMap<&'a str, u8>,
     mut revisited_cave: bool,
 ) -> u32 {
     if node == "end" {

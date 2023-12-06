@@ -21,7 +21,7 @@ fn part1(input: &str) -> Result<u64> {
             }
             *f -= 1;
         }
-        fish.extend(newborns.into_iter());
+        fish.extend(newborns);
     }
     Ok(fish.len() as u64)
 }

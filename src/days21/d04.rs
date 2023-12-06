@@ -73,7 +73,7 @@ fn populate_boards(lines: &mut core::str::Lines) -> Vec<Board> {
     game
 }
 
-fn calc_sum(i: u16, map: &mut HashMap<u16, (usize, usize, bool)>) -> Result<u16> {
+fn calc_sum(i: u16, map: &HashMap<u16, (usize, usize, bool)>) -> Result<u16> {
     let sum: u16 = map.iter().fold(0, |mut prev, (&key, &(x, y, marked))| {
         if !marked {
             prev += key;
@@ -102,7 +102,7 @@ where
                 if board.rows[*x] == 5 || board.cols[*y] == 5 {
                     // winner found.
                     if pt_1 {
-                        return calc_sum(i, &mut board.map);
+                        return calc_sum(i, &board.map);
                     }
                     board.won = true;
                     winner = (i, board.map.clone());
@@ -111,7 +111,7 @@ where
         }
     }
 
-    calc_sum(winner.0, &mut winner.1)
+    calc_sum(winner.0, &winner.1)
 }
 
 const INPUT: &str = "7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1

@@ -3,11 +3,7 @@ use crate::{get_input, Result};
 fn read_input(input: &str) -> Vec<Vec<u32>> {
     input
         .lines()
-        .map(|line| {
-            line.chars()
-                .map(|c| c.to_digit(10).unwrap() as u32)
-                .collect()
-        })
+        .map(|line| line.chars().map(|c| c.to_digit(10).unwrap()).collect())
         .collect()
 }
 

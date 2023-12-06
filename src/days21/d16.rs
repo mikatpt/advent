@@ -116,8 +116,7 @@ fn apply_operation(type_id: u64, results: Vec<u64>) -> u64 {
 fn read_hex_into_binary(hex: &str) -> String {
     hex.chars()
         .map(|c| c.to_digit(16).expect("This should always be a hex digit."))
-        .map(|digit| format!("{:04b}", digit))
-        .collect()
+        .fold(String::new(), |prev, digit| format!("{prev}{:04b}", digit))
 }
 
 pub fn part1(input: &str) -> Result<u64> {

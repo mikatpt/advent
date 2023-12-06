@@ -166,7 +166,7 @@ fn read_line(input: &str) -> Snails {
 
 fn add_pairs(mut first: Snails, second: Snails) -> Snails {
     first.push_front(Snail::Symbol('['));
-    first.extend(second.into_iter());
+    first.extend(second);
     first.push_back(Snail::Symbol(']'));
     first
 }

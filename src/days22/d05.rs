@@ -60,7 +60,7 @@ fn solution(input: &str, part: i32) -> Option<String> {
                 middleman.push_front(item);
             }
         }
-        stacks[to].extend(middleman.into_iter());
+        stacks[to].extend(middleman);
     }
     let mut res = String::new();
 
