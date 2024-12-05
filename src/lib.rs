@@ -7,6 +7,8 @@ extern crate test;
 pub mod days21;
 pub mod days22;
 pub mod days23;
+pub mod days24;
+pub mod template;
 pub mod trace;
 
 pub use color_eyre::eyre::eyre;
@@ -15,7 +17,7 @@ pub use color_eyre::Result;
 use std::{env, fs, io::Write, path};
 use tracing::info;
 
-const YEAR: i32 = 23;
+pub const YEAR: i32 = 24;
 
 pub fn get_input(day: i32) -> Result<String> {
     if day == 0 {

@@ -1,9 +1,10 @@
-use advent::days23::*;
+use advent::days24::*;
 use advent::Result;
 
 fn main() -> Result<()> {
     dotenv::dotenv()?;
     advent::trace::init();
+    daymaker()?;
 
     let day = std::env::args()
         .nth(1)
@@ -49,5 +50,10 @@ fn main() -> Result<()> {
     println!("Answer to part 1 is {}", p1);
     println!("Answer to part 2 is {}", p2);
 
+    Ok(())
+}
+
+fn daymaker() -> Result<()> {
+    advent::template::gen_year(advent::YEAR)?;
     Ok(())
 }
