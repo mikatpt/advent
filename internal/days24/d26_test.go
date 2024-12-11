@@ -3,26 +3,39 @@ package days24
 import (
 	"testing"
 
-	"github.com/logrusorgru/aurora/v4"
-	"github.com/stretchr/testify/assert"
+	"github.com/mikatpt/advent/internal/utils"
 )
 
-func Test_D26_Part1(t *testing.T) {
-	d := &D26{}
-	res, err := d.part1(D26_INPUT)
-	if err != nil {
-		t.Fatal(aurora.Red("failed to execute"), err)
-	}
+type D26 struct{}
 
-	assert.Equal(t, D26_PT1, res)
+const (
+	D26_INPUT   = ``
+	D26_INPUT_2 = D26_INPUT
+
+	D26_PT1   = 0
+	D26_PT1_R = 0
+	D26_PT2   = 0
+	D26_PT2_R = 0
+)
+
+func (d *D26) Part1(input string) (int, error) {
+	return 0, nil
 }
 
-func Test_D26_Part2(t *testing.T) {
-	d := &D26{}
-	res, err := d.part2(D26_INPUT)
-	if err != nil {
-		t.Fatal(aurora.Red("failed to execute"), err)
-	}
+func (d *D26) Part2(input string) (int, error) {
+	return 0, nil
+}
 
-	assert.Equal(t, D26_PT2, res)
+func Test_D26(t *testing.T) {
+	utils.TestDay(
+		t,
+		&D26{},
+		D26_INPUT,
+		D26_INPUT_2,
+		D26_PT1,
+		D26_PT2,
+		D26_PT1_R,
+		D26_PT2_R,
+		26,
+	)
 }
